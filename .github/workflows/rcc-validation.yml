@@ -1,0 +1,39 @@
+name: RCC V1 validation
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Detect RCC package
+        id: detect
+        shell: bash
+        run: |
+          if [ -f package.json ] && [ -f src/main.js ] && [ -f tests/contracts.test.mjs ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::RCC source not imported yet; validation is pending."
+          fi
+      - name: Unit tests
+        if: steps.detect.outputs.ready == 'true'
+        run: npm test
+      - name: Ensure no private data files are committed
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys,re
+          paths=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          blocked=[p for p in paths if re.search(r'(^|/)(rabbit_ticks_.*\.csv|reports_[^/]+|\.env(?:\..*)?|.*\.(?:key|pem))$',p,re.I)]
+          if blocked:
+              print('Blocked paths:',*blocked,sep='\n');sys.exit(1)
+          print('Tracked path scan passed')
+          PY
