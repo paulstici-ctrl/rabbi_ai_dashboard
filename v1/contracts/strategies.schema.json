@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: strategies",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "strategies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "REVERSE"
+            ]
+          },
+          "horizon_s": {
+            "type": "integer"
+          },
+          "regime": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "REJECTED",
+              "WAIT",
+              "ELIGIBLE"
+            ]
+          },
+          "p_adj": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "splits": {
+            "type": "object",
+            "properties": {
+              "train": {
+                "type": "object",
+                "properties": {
+                  "trades": {
+                    "type": "integer"
+                  },
+                  "mean_r": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ci_low": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ci_high": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "win_rate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "profit_factor": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "max_dd_r": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "trades",
+                  "mean_r",
+                  "ci_low",
+                  "ci_high",
+                  "win_rate",
+                  "profit_factor",
+                  "max_dd_r"
+                ],
+                "additionalProperties": false
+              },
+              "validation": {
+                "type": "object",
+                "properties": {
+                  "trades": {
+                    "type": "integer"
+                  },
+                  "mean_r": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ci_low": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "ci_high": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "win_rate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "profit_factor": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "max_dd_r": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "trades",
+                  "mean_r",
+                  "ci_low",
+                  "ci_high",
+                  "win_rate",
+                  "profit_factor",
+                  "max_dd_r"
+                ],
+                "additionalProperties": false
+              },
+              "test": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "NOT_EVALUATED",
+                      "EVALUATED"
+                    ]
+                  },
+                  "trades": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "mean_r": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "status",
+                  "trades",
+                  "mean_r"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "train",
+              "validation",
+              "test"
+            ],
+            "additionalProperties": false
+          },
+          "equity": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "maxItems": 2000
+              },
+              "r_cum": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "maxItems": 2000
+              },
+              "split_index": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "maxItems": 2
+              }
+            },
+            "required": [
+              "t",
+              "r_cum",
+              "split_index"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "pattern",
+          "action",
+          "horizon_s",
+          "regime",
+          "status",
+          "p_adj",
+          "splits",
+          "equity"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 200
+    },
+    "split_plan": {
+      "type": "object",
+      "properties": {
+        "train": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ],
+          "additionalProperties": false
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ],
+          "additionalProperties": false
+        },
+        "test": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ],
+          "additionalProperties": false
+        },
+        "embargo_days": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "train",
+        "validation",
+        "test",
+        "embargo_days"
+      ],
+      "additionalProperties": false
+    },
+    "params": {
+      "type": "object"
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "passed": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "passed",
+          "detail"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "strategies",
+    "split_plan",
+    "params",
+    "gates"
+  ],
+  "additionalProperties": false
+}

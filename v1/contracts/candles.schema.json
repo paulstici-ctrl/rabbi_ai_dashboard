@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: candles",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "symbol": {
+      "type": "string"
+    },
+    "timeframe": {
+      "type": "string",
+      "enum": [
+        "M1",
+        "M5",
+        "M15",
+        "H1",
+        "H4"
+      ]
+    },
+    "candles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t": {
+            "type": "integer"
+          },
+          "o": {
+            "type": "number"
+          },
+          "h": {
+            "type": "number"
+          },
+          "l": {
+            "type": "number"
+          },
+          "c": {
+            "type": "number"
+          },
+          "v": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "t",
+          "o",
+          "h",
+          "l",
+          "c",
+          "v"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 5000
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "symbol",
+    "timeframe",
+    "candles"
+  ],
+  "additionalProperties": false
+}

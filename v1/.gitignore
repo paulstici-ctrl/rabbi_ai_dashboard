@@ -1,0 +1,10 @@
+node_modules/
+shots/
+__pycache__/
+*.pyc
+.env
+.env.*
+# private research material must never be added to the dashboard repository
+ticks_*.csv
+rabbit_ticks_*.csv
+reports_*/

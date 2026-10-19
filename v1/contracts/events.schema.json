@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: events",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "t_utc": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "data",
+              "signal",
+              "risk",
+              "agent",
+              "ci",
+              "system"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warn",
+              "error",
+              "ok"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "t_utc",
+          "type",
+          "severity",
+          "title",
+          "detail",
+          "symbol"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 1000
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "events"
+  ],
+  "additionalProperties": false
+}
