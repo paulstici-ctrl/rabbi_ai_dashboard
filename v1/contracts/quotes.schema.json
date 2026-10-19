@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: quotes",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "quotes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string"
+          },
+          "bid": {
+            "type": "number"
+          },
+          "ask": {
+            "type": "number"
+          },
+          "mid": {
+            "type": "number"
+          },
+          "spread_pips": {
+            "type": "number"
+          },
+          "change_pct": {
+            "type": "number"
+          },
+          "day_high": {
+            "type": "number"
+          },
+          "day_low": {
+            "type": "number"
+          },
+          "atr_pips": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "atr_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "volatility_state": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "NORMAL",
+              "HIGH"
+            ]
+          },
+          "spread_state": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "ELEVATED",
+              "WIDE"
+            ]
+          },
+          "last_tick_utc": {
+            "type": "string"
+          },
+          "spark": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 120
+          }
+        },
+        "required": [
+          "symbol",
+          "bid",
+          "ask",
+          "mid",
+          "spread_pips",
+          "change_pct",
+          "day_high",
+          "day_low",
+          "atr_pips",
+          "atr_pct",
+          "volatility_state",
+          "spread_state",
+          "last_tick_utc",
+          "spark"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "quotes"
+  ],
+  "additionalProperties": false
+}

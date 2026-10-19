@@ -1,0 +1,279 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: system",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "mt5": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "CONNECTED",
+            "DISCONNECTED",
+            "ERROR"
+          ]
+        },
+        "mode": {
+          "type": "string"
+        },
+        "server": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_check_utc": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "mode",
+        "server",
+        "last_check_utc",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "feeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string"
+          },
+          "ticks_per_s": {
+            "type": "number"
+          },
+          "last_tick_age_s": {
+            "type": "number"
+          },
+          "gap_share": {
+            "type": "number"
+          },
+          "spread_median_pips": {
+            "type": "number"
+          },
+          "spread_quality": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "WARN",
+              "FAIL"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "HEALTHY",
+              "DEGRADED",
+              "DOWN"
+            ]
+          }
+        },
+        "required": [
+          "symbol",
+          "ticks_per_s",
+          "last_tick_age_s",
+          "gap_share",
+          "spread_median_pips",
+          "spread_quality",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    },
+    "ci": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "workflow": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failure",
+              "running",
+              "pending"
+            ]
+          },
+          "branch": {
+            "type": "string"
+          },
+          "commit": {
+            "type": "string"
+          },
+          "finished_utc": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "duration_s": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "workflow",
+          "status",
+          "branch",
+          "commit",
+          "finished_utc",
+          "duration_s"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "version",
+          "state"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 30
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "WAIT",
+            "PROVISIONAL",
+            "VALIDATED"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "status",
+        "reasons"
+      ],
+      "additionalProperties": false
+    },
+    "logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t_utc": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "INFO",
+              "WARN",
+              "ERROR"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "t_utc",
+          "level",
+          "source",
+          "msg"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 1000
+    },
+    "safety": {
+      "type": "object",
+      "properties": {
+        "trading_enabled": {
+          "type": "boolean",
+          "const": false
+        },
+        "live_orders": {
+          "type": "integer"
+        },
+        "kill_switch": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "trading_enabled",
+        "live_orders",
+        "kill_switch"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "mt5",
+    "feeds",
+    "ci",
+    "versions",
+    "validation",
+    "logs",
+    "safety"
+  ],
+  "additionalProperties": false
+}
