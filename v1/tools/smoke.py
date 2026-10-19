@@ -6,7 +6,7 @@ import subprocess, sys, time, json, os, signal
 from playwright.sync_api import sync_playwright
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 PORT = 8801
-ROUTES = ['overview', 'terminal', 'agents', 'lab', 'journal', 'system']
+ROUTES = ['overview', 'terminal', 'agents', 'lab', 'journal', 'system', 'ceo']
 VIEWS = {'desktop': dict(width=1440, height=900), 'phone': dict(width=412, height=915, device_scale_factor=2, is_mobile=True, has_touch=True)}
 shots = sys.argv[sys.argv.index('--shots') + 1] if '--shots' in sys.argv else None
 srv = subprocess.Popen([sys.executable, os.path.join(ROOT, 'scripts/serve.py'), str(PORT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -35,7 +35,23 @@ try:
                 if ov > 1: problems.append(f'{vname}/{r}: horizontal overflow {ov}px')
                 if npan < 2: problems.append(f'{vname}/{r}: only {npan} panels')
                 if r in ('overview', 'terminal', 'agents', 'lab') and (not cv or blank): problems.append(f'{vname}/{r}: blank/missing canvas {blank or cv}')
-                if shots: os.makedirs(shots, exist_ok=True); page.screenshot(path=os.path.join(shots, f'{vname}_{r}.png'), full_page=False)
+                if r == 'ceo':
+                    widths = page.evaluate("""() => {
+                        const hero = document.querySelector('.ceo-hero');
+                        const main = document.querySelector('.ceo-page');
+                        return {hero: hero.getBoundingClientRect().width, page: main.getBoundingClientRect().width};
+                    }""")
+                    if widths['hero'] < widths['page'] * 0.80:
+                        problems.append(f"{vname}/ceo: hero collapsed ({widths['hero']:.0f}px of {widths['page']:.0f}px)")
+                if shots: os.makedirs(shots, exist_ok=True); page.screenshot(path=os.path.join(shots, f'{vname}_{r}.png'), full_page=(r == 'ceo'))
+            # CEO department switching and synthetic board controls (no broker calls).
+            page.goto(f'http://127.0.0.1:{PORT}/index.html#/ceo')
+            page.wait_for_selector('.ceo-page')
+            page.click('[data-action="ceo-dept"][data-value="news"]')
+            assert 'No runtime connected' in page.inner_text('.ceo-detail')
+            page.click('[data-action="ceo-symbol"][data-value="EURUSD"]')
+            assert 'EURUSD' in page.inner_text('.ceo-board__verdict')
+            assert 'RESEARCH ONLY' in page.inner_text('.ceo-board')
             # interactions
             page.goto(f'http://127.0.0.1:{PORT}/index.html#/terminal'); page.wait_for_selector('canvas'); page.wait_for_timeout(600)
             page.click('[data-action="t-tf"][data-value="H1"]'); page.wait_for_timeout(500); page.click('[data-action="t-symbol"][data-value="EURUSD"]'); page.wait_for_timeout(500)

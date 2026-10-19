@@ -5,7 +5,7 @@ import { chip } from './components/index.js';
 import { fmtTimeS, fmtDate } from '../core/format.js';
 
 export const NAV = [
-  { path: '/overview', label: 'Overview', icon: 'overview', key: '1' }, { path: '/terminal', label: 'Terminal', icon: 'terminal', key: '2' },
+  { path: '/overview', label: 'Overview', icon: 'overview', key: '1' }, { path: '/ceo', label: 'RABBIT CEO', icon: 'ceo', key: '7' }, { path: '/terminal', label: 'Terminal', icon: 'terminal', key: '2' },
   { path: '/agents', label: 'AI Agents', icon: 'agents', key: '3' }, { path: '/lab', label: 'Strategy Lab', icon: 'lab', key: '4' },
   { path: '/journal', label: 'Journal', icon: 'journal', key: '5' }, { path: '/system', label: 'System', icon: 'system', key: '6' },
 ];
@@ -29,7 +29,7 @@ export const shellHtml = () => html`
     <div class="demo-banner" id="demo-banner" role="note"></div>
     <main id="main" class="page" tabindex="-1"></main>
   </div>
-  <nav class="bottomnav" aria-label="Primary mobile">${NAV.map((n) => html`<a class="bottomnav__a" data-nav="${n.path}" href="#${n.path}">${icon(n.icon, 20)}<span>${n.label.replace('Strategy Lab', 'Lab').replace('AI Agents', 'Agents')}</span></a>`)}</nav>
+  <nav class="bottomnav" aria-label="Primary mobile">${NAV.map((n) => html`<a class="bottomnav__a" data-nav="${n.path}" href="#${n.path}">${icon(n.icon, 20)}<span>${n.label.replace('Strategy Lab', 'Lab').replace('AI Agents', 'Agents').replace('RABBIT CEO', 'CEO')}</span></a>`)}</nav>
 </div>
 <div id="toasts" class="toasts" aria-live="polite"></div>
 <div id="overlay" class="overlay" hidden></div>`;
