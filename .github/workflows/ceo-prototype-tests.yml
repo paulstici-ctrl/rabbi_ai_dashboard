@@ -1,0 +1,25 @@
+name: CEO prototype tests
+on:
+  push:
+    branches:
+      - feat/ceo-dashboard-prototype
+    paths:
+      - 'v1/**'
+      - '.github/workflows/ceo-prototype-tests.yml'
+  pull_request:
+    paths:
+      - 'v1/**'
+      - '.github/workflows/ceo-prototype-tests.yml'
+permissions:
+  contents: read
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Existing V1 and new CEO tests
+        working-directory: v1
+        run: npm test
