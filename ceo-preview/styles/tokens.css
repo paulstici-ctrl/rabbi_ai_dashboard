@@ -1,0 +1,16 @@
+/* RABBIT Command Center design tokens. Dark terminal; brand = cyan→violet; semantic: bull green, bear red, amber warning. */
+:root {
+  --bg-0: #04070b; --bg-1: #070c12; --bg-2: #0b121a; --bg-3: #0f1923; --bg-4: #152230;
+  --line: #17222f; --line-2: #223142; --line-3: #2f4358;
+  --tx-0: #eaf2f9; --tx-1: #b9c8d6; --tx-2: #7d90a5; --tx-3: #53667b;
+  --bull: #2ee6a6; --bear: #ff5577; --amber: #ffb347; --cyan: #5ee7ff; --violet: #8b7bff; --blue: #4da3ff;
+  --bull-bg: rgba(46,230,166,.12); --bear-bg: rgba(255,85,119,.12); --amber-bg: rgba(255,179,71,.12); --cyan-bg: rgba(94,231,255,.10); --violet-bg: rgba(139,123,255,.14);
+  --brand: linear-gradient(135deg, #5ee7ff, #8b7bff);
+  --glow: 0 0 0 1px rgba(94,231,255,.20), 0 0 28px rgba(94,231,255,.08);
+  --r-1: 6px; --r-2: 10px; --r-3: 14px;
+  --font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+  --fs-0: 10px; --fs-1: 11px; --fs-2: 12px; --fs-3: 13px; --fs-4: 15px; --fs-5: 20px; --fs-6: 26px; --fs-7: 34px;
+  --sidebar: 218px; --topbar: 52px; --bottomnav: 62px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}

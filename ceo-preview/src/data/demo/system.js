@@ -1,0 +1,18 @@
+import { SYMBOLS, SYMBOL_CFG, DEMO_NOW, quoteAt } from './market.js';
+import { unixToIso } from '../../core/format.js';
+import { rngFor } from '../../core/prng.js';
+
+export function systemAt(cursor = 0) {
+  const now = DEMO_NOW + cursor * 60, iso = (dt) => unixToIso(now - dt), rng = rngFor('system');
+  const feeds = SYMBOLS.map((s, i) => { const q = quoteAt(s, cursor), cfg = SYMBOL_CFG[s], ratio = q.spread_pips / cfg.spread_floor_pips; return { symbol: s, ticks_per_s: +(1.4 + i * 0.35 + rng.rnd() * 0.3).toFixed(2), last_tick_age_s: +(0.3 + rng.rnd() * 1.6).toFixed(1), gap_share: +(0.0015 + rng.rnd() * 0.004).toFixed(4), spread_median_pips: q.spread_pips, spread_quality: ratio > 1.15 ? 'WARN' : 'PASS', status: q.spread_state === 'WIDE' ? 'DEGRADED' : 'HEALTHY' }; });
+  const L = (dt, level, source, msg) => ({ t_utc: iso(dt), level, source, msg });
+  const logs = [L(5, 'INFO', 'feed', 'demo replay tick accepted (4 symbols)'), L(31, 'INFO', 'agents', 'heartbeat ok: 5/5 agents'), L(95, 'WARN', 'mt5', 'terminal not connected: running on synthetic data'), L(180, 'INFO', 'engine', 'baseline V7.2.1 frozen; simulator V7.3.1 proposal loaded'), L(260, 'INFO', 'feed', 'gap check: max gap 4.1 s (limit 5 s)'), L(480, 'WARN', 'feed', 'GBPJPY spread above its 1.35x baseline'), L(640, 'ERROR', 'ci', 'windows legacy-tests job failed on pandas 3.0 (known baseline result, not edited)'), L(700, 'INFO', 'ci', 'safety scanner: 0 findings (report mode)'), L(1500, 'INFO', 'risk', 'kill switch engaged: live trading disabled'), L(2100, 'WARN', 'engine', 'validation verdict WAIT: no candidate passed FDR'), L(3300, 'INFO', 'lab', 'candidate table exported: 10 strategies'), L(5200, 'INFO', 'feed', 'session change: London open'), L(7000, 'WARN', 'agents', 'Strategy Evaluator idle > 60 min'), L(9000, 'INFO', 'system', 'command center demo data generated (deterministic)')];
+  return {
+    mt5: { status: 'DISCONNECTED', mode: 'history-only (planned)', server: null, last_check_utc: iso(95), note: 'No terminal attached. This build never sends orders; MT5 will only be used to download quote history.' },
+    feeds,
+    ci: [{ workflow: 'safety (ubuntu-latest)', status: 'success', branch: 'develop', commit: 'd14037c', finished_utc: iso(7200), duration_s: 41 }, { workflow: 'safety (windows-latest)', status: 'success', branch: 'develop', commit: 'd14037c', finished_utc: iso(7150), duration_s: 78 }, { workflow: 'baseline-guard', status: 'success', branch: 'develop', commit: 'd14037c', finished_utc: iso(7100), duration_s: 22 }, { workflow: 'legacy-tests (windows)', status: 'failure', branch: 'develop', commit: 'd14037c', finished_utc: iso(6900), duration_s: 95 }, { workflow: 'audit-tests v7.3.1', status: 'running', branch: 'audit/v731', commit: 'a91c3e2', finished_utc: null, duration_s: null }, { workflow: 'dashboard-contracts', status: 'pending', branch: 'feat/command-center', commit: 'b72f410', finished_utc: null, duration_s: null }],
+    versions: [{ component: 'Engine baseline', version: 'V7.2.1', state: 'FROZEN' }, { component: 'Simulator', version: 'V7.3.1', state: 'PROPOSAL' }, { component: 'Research package', version: '0.1', state: 'PROPOSAL' }, { component: 'Command Center', version: '1.0.0', state: 'DEMO DATA' }, { component: 'Data contracts', version: 'schema v1', state: 'STABLE' }],
+    validation: { status: 'WAIT', reasons: ['No candidate passed FDR-controlled validation (0 of 10 demo strategies, 0 of 144 in the V7.2 family)', 'Spread-cost hurdle exceeds any measured gross edge', 'Forward DEMO evidence not started', 'Broker clock offset and real spreads not yet measured'] },
+    logs, safety: { trading_enabled: false, live_orders: 0, kill_switch: 'ENGAGED' },
+  };
+}

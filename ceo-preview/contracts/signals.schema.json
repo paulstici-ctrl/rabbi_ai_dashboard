@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: signals",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "timeframe": {
+            "type": "string",
+            "enum": [
+              "M1",
+              "M5",
+              "M15",
+              "H1",
+              "H4"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL",
+              "WAIT"
+            ]
+          },
+          "created_utc": {
+            "type": "string"
+          },
+          "entry": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "stop_loss": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "take_profit": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "risk_reward": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "probability": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "validation": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "unvalidated",
+                  "validated"
+                ]
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "note": {
+            "type": "string"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "pro",
+                    "con",
+                    "info"
+                  ]
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "text"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 20
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "passed": {
+                  "type": "boolean"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "passed",
+                "detail"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "id",
+          "symbol",
+          "timeframe",
+          "action",
+          "created_utc",
+          "entry",
+          "stop_loss",
+          "take_profit",
+          "risk_reward",
+          "probability",
+          "validation",
+          "note",
+          "reasons",
+          "checks"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "signals"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: account",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "account": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "initial": {
+          "type": "number"
+        },
+        "equity": {
+          "type": "number"
+        },
+        "day_pnl": {
+          "type": "number"
+        },
+        "week_pnl": {
+          "type": "number"
+        },
+        "drawdown_pct": {
+          "type": "number"
+        },
+        "max_drawdown_pct": {
+          "type": "number"
+        },
+        "risk_per_trade_pct": {
+          "type": "number"
+        },
+        "open_positions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "symbol": {
+                "type": "string"
+              },
+              "side": {
+                "type": "string",
+                "enum": [
+                  "BUY",
+                  "SELL"
+                ]
+              },
+              "entry": {
+                "type": "number"
+              },
+              "stop_loss": {
+                "type": "number"
+              },
+              "take_profit": {
+                "type": "number"
+              },
+              "opened_utc": {
+                "type": "string"
+              },
+              "floating_r": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "symbol",
+              "side",
+              "entry",
+              "stop_loss",
+              "take_profit",
+              "opened_utc",
+              "floating_r"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "exposure": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "symbol": {
+                "type": "string"
+              },
+              "risk_r": {
+                "type": "number"
+              },
+              "share_pct": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "symbol",
+              "risk_r",
+              "share_pct"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "daily_loss_pct": {
+              "type": "number"
+            },
+            "max_drawdown_pct": {
+              "type": "number"
+            },
+            "max_open_positions": {
+              "type": "integer"
+            },
+            "risk_per_trade_pct": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "daily_loss_pct",
+            "max_drawdown_pct",
+            "max_open_positions",
+            "risk_per_trade_pct"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "label",
+        "currency",
+        "initial",
+        "equity",
+        "day_pnl",
+        "week_pnl",
+        "drawdown_pct",
+        "max_drawdown_pct",
+        "risk_per_trade_pct",
+        "open_positions",
+        "exposure",
+        "limits"
+      ],
+      "additionalProperties": false
+    },
+    "equity_curve": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t": {
+            "type": "integer"
+          },
+          "equity": {
+            "type": "number"
+          },
+          "drawdown_pct": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "t",
+          "equity",
+          "drawdown_pct"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 5000
+    },
+    "recent_outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "W",
+          "L",
+          "B"
+        ]
+      },
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "account",
+    "equity_curve",
+    "recent_outcomes"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,25 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { color-scheme: dark; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg-0); color: var(--tx-1); font: 400 var(--fs-3)/1.45 var(--font-ui); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(1100px 520px at 78% -8%, rgba(139,123,255,.10), transparent 60%), radial-gradient(900px 480px at 8% 4%, rgba(94,231,255,.07), transparent 60%),
+    radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0/20px 20px; }
+a { color: var(--cyan); text-decoration: none; } a:hover { text-decoration: underline; }
+h1, h2, h3, p { margin: 0; } h3 { font-size: var(--fs-4); color: var(--tx-0); font-weight: 650; }
+b { color: var(--tx-0); font-weight: 600; } kbd { font: 10px var(--font-mono); color: var(--tx-2); border: 1px solid var(--line-2); border-radius: 4px; padding: 0 5px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.dim { color: var(--tx-2); } .small { font-size: var(--fs-1); } .grow { flex: 1; }
+.pos { color: var(--bull); } .neg { color: var(--bear); } .flat { color: var(--tx-1); } .amber { color: var(--amber); }
+.mt { margin-top: 14px; } .lbl { font: 600 var(--fs-0)/1.2 var(--font-mono); letter-spacing: .09em; color: var(--tx-2); text-transform: uppercase; }
+.skip { position: absolute; left: -999px; } .skip:focus { left: 8px; top: 8px; z-index: 99; background: var(--bg-3); padding: 6px 10px; border-radius: 6px; }
+.ico { flex: none; } .hide-sm { }
+.sim { font-style: normal; font: 600 9px var(--font-mono); letter-spacing: .08em; color: var(--amber); border: 1px solid rgba(255,179,71,.4); border-radius: 4px; padding: 0 4px; }
+input[type=number], input[type=search], input[type=text], textarea, select { background: var(--bg-1); border: 1px solid var(--line-2); border-radius: var(--r-1); padding: 6px 8px; width: 100%; font-family: var(--font-mono); font-size: var(--fs-2); }
+input:focus, textarea:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 0 3px rgba(94,231,255,.12); }
+input[type=checkbox] { accent-color: var(--cyan); width: 15px; height: 15px; }
+textarea { resize: vertical; font-family: var(--font-ui); }
+::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-thumb { background: var(--line-3); border-radius: 8px; } ::-webkit-scrollbar-track { background: transparent; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
