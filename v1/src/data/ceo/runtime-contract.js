@@ -119,6 +119,8 @@ export function decodeCeoRuntimeSnapshot(payload, { nowSeconds = Date.now() / 10
   const reviews = array(p.reviews, 'reviews', 128).map((raw) => {
     const r = object(raw, 'review');
     if (r.research_only !== true || typeof r.synthetic !== 'boolean') fail('review provenance required');
+    if ((Object.prototype.hasOwnProperty.call(r, 'probability') && r.probability !== null) ||
+        Object.prototype.hasOwnProperty.call(r, 'calibration_ref')) fail('uncalibrated probabilities forbidden');
     const risk = object(r.risk, 'review risk');
     return {
       instrument: text(r.instrument, 'review instrument', 30), horizon: text(r.horizon, 'review horizon', 10),
