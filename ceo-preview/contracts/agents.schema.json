@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: agents",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "IDLE",
+              "BLOCKED",
+              "ERROR"
+            ]
+          },
+          "task": {
+            "type": "string"
+          },
+          "uptime_s": {
+            "type": "integer"
+          },
+          "last_heartbeat_utc": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 20
+          },
+          "decisions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "t_utc": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "verdict": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "explanation": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 20
+                },
+                "confidence": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "t_utc",
+                "symbol",
+                "verdict",
+                "summary",
+                "explanation",
+                "confidence"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 100
+          },
+          "log": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "t_utc": {
+                  "type": "string"
+                },
+                "level": {
+                  "type": "string",
+                  "enum": [
+                    "INFO",
+                    "WARN",
+                    "ERROR"
+                  ]
+                },
+                "msg": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "t_utc",
+                "level",
+                "msg"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 300
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "role",
+          "state",
+          "task",
+          "uptime_s",
+          "last_heartbeat_utc",
+          "metrics",
+          "decisions",
+          "log"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t_utc": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "t_utc",
+          "from",
+          "to",
+          "topic"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 200
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "agents",
+    "messages"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,187 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: journal",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "trades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "side": {
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL"
+            ]
+          },
+          "strategy_id": {
+            "type": "string"
+          },
+          "opened_utc": {
+            "type": "string"
+          },
+          "closed_utc": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "entry": {
+            "type": "number"
+          },
+          "exit": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "stop_loss": {
+            "type": "number"
+          },
+          "take_profit": {
+            "type": "number"
+          },
+          "result_r": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "exit_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "TARGET",
+              "STOP",
+              "TIME",
+              null
+            ]
+          },
+          "risk_pct": {
+            "type": "number"
+          },
+          "simulated": {
+            "type": "boolean",
+            "const": true
+          },
+          "agent_decision_id": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "symbol",
+          "side",
+          "strategy_id",
+          "opened_utc",
+          "closed_utc",
+          "entry",
+          "exit",
+          "stop_loss",
+          "take_profit",
+          "result_r",
+          "exit_reason",
+          "risk_pct",
+          "simulated",
+          "agent_decision_id",
+          "tags",
+          "note"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 2000
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "t_utc": {
+            "type": "string"
+          },
+          "agent": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "t_utc",
+          "agent",
+          "symbol",
+          "verdict",
+          "summary",
+          "outcome"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 2000
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "trades",
+    "decisions"
+  ],
+  "additionalProperties": false
+}

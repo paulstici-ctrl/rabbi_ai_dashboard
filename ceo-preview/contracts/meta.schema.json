@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RABBIT Command Center contract: meta",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "demo",
+        "live-readonly"
+      ]
+    },
+    "generated_utc": {
+      "type": "string"
+    },
+    "as_of_utc": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "trading_enabled": {
+      "type": "boolean",
+      "const": false
+    },
+    "engine": {
+      "type": "object",
+      "properties": {
+        "baseline": {
+          "type": "string"
+        },
+        "simulator": {
+          "type": "string"
+        },
+        "validation": {
+          "type": "string",
+          "enum": [
+            "WAIT",
+            "PROVISIONAL",
+            "VALIDATED"
+          ]
+        }
+      },
+      "required": [
+        "baseline",
+        "simulator",
+        "validation"
+      ],
+      "additionalProperties": false
+    },
+    "timeframes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "M1",
+          "M5",
+          "M15",
+          "H1",
+          "H4"
+        ]
+      },
+      "maxItems": 10
+    },
+    "disclaimers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10
+    },
+    "symbols": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string"
+          },
+          "asset_class": {
+            "type": "string"
+          },
+          "digits": {
+            "type": "integer"
+          },
+          "pip_size": {
+            "type": "number"
+          },
+          "pip_value_per_lot_usd": {
+            "type": "number"
+          },
+          "spread_floor_pips": {
+            "type": "number"
+          },
+          "max_spread_pips": {
+            "type": "number"
+          },
+          "min_stop_pips": {
+            "type": "number"
+          },
+          "max_spread_r": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "symbol",
+          "asset_class",
+          "digits",
+          "pip_size",
+          "pip_value_per_lot_usd",
+          "spread_floor_pips",
+          "max_spread_pips",
+          "min_stop_pips",
+          "max_spread_r"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "generated_utc",
+    "as_of_utc",
+    "source",
+    "trading_enabled",
+    "engine",
+    "timeframes",
+    "disclaimers",
+    "symbols"
+  ],
+  "additionalProperties": false
+}
