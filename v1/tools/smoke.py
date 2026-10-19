@@ -35,7 +35,15 @@ try:
                 if ov > 1: problems.append(f'{vname}/{r}: horizontal overflow {ov}px')
                 if npan < 2: problems.append(f'{vname}/{r}: only {npan} panels')
                 if r in ('overview', 'terminal', 'agents', 'lab') and (not cv or blank): problems.append(f'{vname}/{r}: blank/missing canvas {blank or cv}')
-                if shots: os.makedirs(shots, exist_ok=True); page.screenshot(path=os.path.join(shots, f'{vname}_{r}.png'), full_page=False)
+                if r == 'ceo':
+                    widths = page.evaluate("""() => {
+                        const hero = document.querySelector('.ceo-hero');
+                        const main = document.querySelector('.ceo-page');
+                        return {hero: hero.getBoundingClientRect().width, page: main.getBoundingClientRect().width};
+                    }""")
+                    if widths['hero'] < widths['page'] * 0.80:
+                        problems.append(f"{vname}/ceo: hero collapsed ({widths['hero']:.0f}px of {widths['page']:.0f}px)")
+                if shots: os.makedirs(shots, exist_ok=True); page.screenshot(path=os.path.join(shots, f'{vname}_{r}.png'), full_page=(r == 'ceo'))
             # CEO department switching and synthetic board controls (no broker calls).
             page.goto(f'http://127.0.0.1:{PORT}/index.html#/ceo')
             page.wait_for_selector('.ceo-page')
