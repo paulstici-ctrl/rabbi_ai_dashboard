@@ -1,0 +1,1 @@
+Upload `rabbit-command-center-v1.0.zip` to this folder **on branch `feat/command-center-v1`** using GitHub web Upload files. GitHub Actions extracts the 97 files to `v1/`, runs `npm test`, removes the ZIP, and commits only to this branch. Do not merge until reviewed.
