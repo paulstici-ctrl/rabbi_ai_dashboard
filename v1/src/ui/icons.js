@@ -1,5 +1,6 @@
 import { raw } from '../core/dom.js';
 const P = {
+  ceo: '<rect x="5" y="4" width="14" height="16" rx="3"/><path d="M9 12h6M12 9v6M3 9h2M19 9h2M3 15h2M19 15h2"/>',
   overview: '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
   terminal: '<path d="M6 4v3M6 15v3M6 7h0M4.5 7h3v8h-3zM12 3v4M12 13v4M10.5 7h3v6h-3zM18 6v3M18 17v3M16.5 9h3v8h-3z"/>',
   agents: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="17" r="2.2"/><circle cx="19" cy="17" r="2.2"/><circle cx="12" cy="12" r="1.5"/><path d="M12 7.2v3.3M10.8 13l-4.5 2.6M13.2 13l4.5 2.6"/>',
