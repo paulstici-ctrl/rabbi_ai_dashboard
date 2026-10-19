@@ -1,0 +1,47 @@
+name: Publish RCC V1 preview only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-rcc-v1-preview.yml'
+permissions:
+  contents: write
+jobs:
+  publish-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Fetch reviewed V1 from feature branch
+        shell: bash
+        run: |
+          git fetch --depth=1 origin feat/command-center-v1
+          mkdir -p /tmp/rcc-preview
+          git archive FETCH_HEAD v1 | tar -x -C /tmp/rcc-preview
+          test -f /tmp/rcc-preview/v1/index.html
+          test -f /tmp/rcc-preview/v1/package.json
+          test -f /tmp/rcc-preview/v1/src/main.js
+          test "$(find /tmp/rcc-preview/v1 -type f | wc -l)" -eq 97
+          cp -a /tmp/rcc-preview/v1 ./v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify preview before publishing
+        working-directory: v1
+        run: npm test
+      - name: Commit preview directory only to main
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- v1/
+          if git diff --cached --quiet; then
+            echo 'Preview already up to date'
+            exit 0
+          fi
+          git commit -m 'preview: publish validated RCC V1 under /v1/ only'
+          git push origin HEAD:main
