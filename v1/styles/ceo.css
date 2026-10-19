@@ -1,6 +1,10 @@
 /* CEO Dashboard — isolated presentation layer. Research demo only. */
 .ceo-page { display: grid; gap: 12px; grid-template-columns: repeat(12, minmax(0,1fr)); }
 .ceo-page > * { min-width: 0; }
+/* Page engine wraps each region in .region; span the whole grid for hero on desktop. */
+.ceo-page > .region[data-region="hero"] { grid-column: 1 / -1; }
+.ceo-page > .region[data-region="hero"] > .ceo-hero { width: 100%; }
+
 .ceo-hero { grid-column: 1/-1; display: flex; align-items: stretch; justify-content: space-between; gap: 20px;
   position: relative; overflow: hidden; min-height: 215px; padding: 26px 30px;
   border: 1px solid rgba(94,231,255,.26); border-radius: var(--r-3);
