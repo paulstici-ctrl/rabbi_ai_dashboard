@@ -34,7 +34,7 @@ function uiData() { return mapCeoApiToDashboard(validateCeoSnapshot(fixture(), {
 
 test('private page displays all six CEO divisions and never pretends to execute trades', () => {
   const h = String(renderPrivateCeo(uiData()));
-  for (const x of ['Forex & Gold', 'Crypto', 'Equities', 'News', 'Risk', 'Research']) assert.ok(h.includes(x), x);
+  for (const x of ['Forex &amp; Gold', 'Crypto', 'Equities', 'News', 'Risk', 'Research']) assert.ok(h.includes(x), x);
   assert.match(h, /RABBIT/);
   assert.match(h, /TRADING OFF/);
   assert.match(h, /DEMO/);
