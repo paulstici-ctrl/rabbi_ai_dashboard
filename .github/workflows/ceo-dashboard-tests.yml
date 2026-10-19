@@ -1,0 +1,29 @@
+name: RABBIT CEO prototype checks
+on:
+  push:
+    branches: [feat/ceo-dashboard-prototype]
+    paths:
+      - 'v1/**'
+      - '.github/workflows/ceo-dashboard-tests.yml'
+  pull_request:
+    paths:
+      - 'v1/**'
+      - '.github/workflows/ceo-dashboard-tests.yml'
+permissions:
+  contents: read
+jobs:
+  ceo-offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify V1 tests and CEO demo contracts
+        working-directory: v1
+        run: npm test
+      - name: Verify no external CEO network dependencies
+        shell: bash
+        run: |
+          ! grep -En '(fetch\(|WebSocket\(|XMLHttpRequest|order_send|account_info)' v1/src/data/ceo/model.js v1/src/ui/pages/ceo.js
