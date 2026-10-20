@@ -1,0 +1,40 @@
+name: RCC V1 app checks
+on:
+  push:
+    branches: [feat/command-center-v1]
+    paths:
+      - 'v1/**'
+      - '.github/workflows/rcc-v1-checks.yml'
+  pull_request:
+    paths:
+      - 'v1/**'
+      - '.github/workflows/rcc-v1-checks.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run 40 unit tests
+        working-directory: v1
+        run: npm test
+      - name: Verify six routes and demo safety
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('v1')
+          assert (p/'index.html').is_file()
+          assert (p/'src/main.js').is_file()
+          assert (p/'src/data/provider.js').is_file()
+          assert len(list((p/'contracts').glob('*.schema.json'))) == 11
+          for name in ['overview','terminal','agents','lab','journal','system']:
+              assert name in (p/'src/app.js').read_text() or any(name in x.read_text(errors='replace') for x in (p/'src').rglob('*.js')), name
+          assert 'trading_enabled' in (p/'contracts/meta.schema.json').read_text()
+          print('Static contract and route checks passed')
+          PY

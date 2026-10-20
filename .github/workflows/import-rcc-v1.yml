@@ -1,0 +1,56 @@
+name: Import RCC V1 archive
+on:
+  push:
+    branches: [feat/command-center-v1]
+    paths: ['incoming/rabbit-command-center-v1.0.zip']
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Validate and extract supplied archive
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import zipfile,pathlib,re,sys
+          archive=pathlib.Path('incoming/rabbit-command-center-v1.0.zip')
+          if not archive.is_file(): sys.exit('ZIP missing')
+          target=pathlib.Path('v1')
+          target.mkdir(exist_ok=True)
+          with zipfile.ZipFile(archive) as z:
+              files=[x for x in z.infolist() if not x.is_dir()]
+              if len(files)!=97: sys.exit(f'Expected 97 files; got {len(files)}')
+              for info in files:
+                  name=info.filename
+                  if not name.startswith('rabbit-command-center/'): sys.exit(f'Unexpected root: {name}')
+                  rel=pathlib.PurePosixPath(name.removeprefix('rabbit-command-center/'))
+                  if rel.is_absolute() or '..' in rel.parts or not rel.parts: sys.exit(f'Unsafe path: {name}')
+                  if re.search(r'(^|/)(\.env(?:\..*)?|.*\.(?:pem|key)|rabbit_ticks_.*\.csv)$',str(rel),re.I):
+                      sys.exit(f'Private file: {name}')
+                  if info.file_size>10_000_000: sys.exit(f'Oversized file: {name}')
+                  dest=target.joinpath(*rel.parts)
+                  dest.parent.mkdir(parents=True,exist_ok=True)
+                  dest.write_bytes(z.read(info))
+          archive.unlink()
+          print('Extracted',len(files),'files to v1/')
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run RCC unit tests
+        working-directory: v1
+        run: npm test
+      - name: Commit imported app on feature branch only
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A v1 incoming/rabbit-command-center-v1.0.zip
+          git diff --cached --quiet && exit 0
+          git commit -m 'feat: import validated RCC V1 app under v1/'
+          git push origin HEAD:feat/command-center-v1

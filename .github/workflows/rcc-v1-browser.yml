@@ -1,0 +1,37 @@
+name: RCC V1 Chromium smoke
+on:
+  push:
+    branches: [feat/command-center-v1]
+    paths:
+      - 'v1/**'
+      - '.github/workflows/rcc-v1-browser.yml'
+  pull_request:
+    paths:
+      - 'v1/**'
+      - '.github/workflows/rcc-v1-browser.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Chromium desktop and phone smoke
+        working-directory: v1
+        run: npm run smoke
+      - name: Upload smoke screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rcc-v1-browser-shots
+          path: v1/shots/
+          if-no-files-found: ignore
+          retention-days: 7
